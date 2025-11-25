@@ -472,6 +472,34 @@
   }
 }
 
+/* PERBAIKAN ANDROID – agar teks tidak terpotong dan layout lebih stabil */
+@media (max-width: 480px) {
+  #albumSlide {
+    margin-top: 100px; /* sebelumnya 150px, ini bikin layar kecil tidak terpotong */
+    padding-bottom: 80px;
+  }
+
+  #albumSlide h2 {
+    font-size: 22px;
+    margin-top: 60px; /* biar tidak terdorong ke atas dan hilang */
+  }
+
+  #albumSlide p {
+    font-size: 14px;
+  }
+
+  /* grid lebih aman untuk layar sempit */
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 12px;
+  }
+
+  .album-grid img {
+    height: 135px; /* biar proporsional di Android */
+  }
+}
+
+
 
 </style>
 
