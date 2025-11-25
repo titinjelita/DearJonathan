@@ -388,6 +388,89 @@
   margin-top: 15px;
 }
 
+/* =======================
+   ALBUM MEWAH — ANDROID
+   ======================= */
+
+#albumSlide {
+  text-align: center;
+  padding-bottom: 100px;
+  animation: fadeIn 0.5s ease;
+  margin-top: 150px;
+}
+
+#albumSlide h2 {
+  font-size: 25px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  margin-top: 90px;
+}
+
+#albumSlide p {
+  font-size: 15px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+/* efek masuk */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* grid yg rapi di android */
+.album-grid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 18px;
+  padding: 10px 15px;
+}
+
+/* CARD FOTO */
+.album-grid img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+
+  border-radius: 16px;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.15),
+    0 0 12px rgba(91,124,250,0.25);
+
+  background: #fff;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.3s ease;
+  cursor: pointer;
+
+  /* bikin klik terasa lembut */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.album-grid img:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+/* saat ditekan (hover hanya untuk desktop) */
+.album-grid img:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.18),
+    0 0 18px rgba(91,124,250,0.45);
+}
+
+/* RESPONSIVE – Android fullscreen behavior */
+@media (max-width: 480px) {
+  .album-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 14px;
+  }
+  .album-grid img {
+    height: 145px;
+  }
+}
 
 
 </style>
@@ -450,6 +533,7 @@
       <button class="menu-btn" data-slide="doa">Harapan 💖</button>
       <button class="menu-btn" data-slide="kado">Kejutan 🎁</button>
       <button class="menu-btn" data-slide="ayat">Ayat Emas ✨</button>
+      <button class="menu-btn" data-slide="album">Album 📸</button>
     </div>
   </div>
 
@@ -490,6 +574,32 @@
     <button class="btn" id="giftBtn">Buka Hadiah 💌</button>
   </div>
   
+  <div class="slide" id="albumSlide">
+  <h2>🐣 Kenangan 🌱</h2>
+  <p>“Foto adalah cara waktu berbisik agar kita tidak lupa. Kadang satu jepretan aja udah cukup buat bikin kita tersenyum atau pun sedih sendiri, ingat momen yang dulu kerasa simpel tapi ternyata itu salah satu momen yang dirindukan.🌷”</p>
+
+  <div class="album-grid">
+
+    <!-- TEMPLATE GAMBAR — tinggal ganti src -->
+    <img src="images/261.png">
+    <img src="images/262.png">
+    <img src="images/263.png">
+    <img src="images/264.png">
+    <img src="images/265.png">
+    <img src="images/266.png">
+    <img src="images/267.png">
+    <img src="images/268.png">
+    <img src="images/269.png">
+    <img src="images/270.png">
+    <img src="images/271.png">
+    <img src="images/272.png">
+
+
+  </div>
+  </div>
+
+
+
 
   <div class="nav-buttons" id="navWrap">
     <button class="btn" id="backToIntroBtn" style="display:none;">🏠 Kembali</button>
@@ -584,13 +694,6 @@ function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);shapes.forEach(
    ----------------------- */
 document.getElementById("giftBtn").onclick=()=>{const msg=document.getElementById("giftMessage");msg.classList.add("active");setTimeout(()=>msg.classList.remove("active"),4000);};
 
-/* -----------------------
-   YOUTUBE MUSIK + AUDIO FALLBACK
-   - Memiliki dua opsi pemutaran:
-     1) Jika user memasukkan audio lokal (di <audio id="localAudio">), tombol akan mengontrol audio lokal.
-     2) Jika tidak ada audio lokal, gunakan YouTube iframe API (video tersembunyi).
-   - Catatan: autoplay di mobile sering dibatasi oleh browser; pengguna biasanya harus menyentuh halaman (tombol) untuk mulai.
-   ----------------------- */
 let player = null;
 let playerReady = false;
 let usingLocal = false;
@@ -600,7 +703,7 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
       height: '0',
       width: '0',
-      videoId: 'HDRsMqNhMLc', // video default
+      videoId: 'lgzmtLPpHf4', // video default
       playerVars: {
         autoplay: 0,
         start: 10,
@@ -611,8 +714,6 @@ function onYouTubeIframeAPIReady() {
       events: {
         'onReady': function() {
           playerReady = true;
-          // hide or keep player div hidden (kept hidden)
-          // console.log("YouTube player siap");
         },
         'onStateChange': function(event){
           // remove playing class if paused/stopped
@@ -702,8 +803,6 @@ musicBtn.addEventListener("click", async function(){
       alert("Terjadi masalah saat mengontrol pemutar YouTube.");
     }
   } else {
-    // If player not ready yet, inform user and try to initialize after user gesture
-    // Try to create minimal player if YT failed to load
     if (typeof YT === 'undefined') {
       alert("Pemutar YouTube belum siap. Pastikan perangkat terhubung internet, atau gunakan audio lokal dengan menambahkan file mp3 ke <audio id='localAudio'>.");
     } else {
@@ -722,20 +821,6 @@ document.querySelectorAll('.menu-btn, #backToIntroBtn, #backToMenuBtn').forEach(
   });
 });
 
-/* -----------------------
-   NOTES FOR USER (IN-CODE)
-   - Untuk mengganti gambar di tiap slide, ganti file src pada elemen <img id="imgIntro"> dst:
-     contoh: <img id="imgIntro" src="images/intro-template.jpg">
-     ganti menjadi: src="images/foto_saya.jpg"
-   - Untuk menggunakan audio lokal (fallback), tambahkan source di tag <audio id="localAudio">:
-     <audio id="localAudio" preload="none">
-       <source src="audio/my-bgm.mp3" type="audio/mpeg">
-     </audio>
-   - Jika ingin mengganti video YouTube, ubah videoId di bagian onYouTubeIframeAPIReady / konfigurasi player.
-   ----------------------- */
-
-/* End of script */
-/* === Efek Lilin: mati saat ditiup, nyala otomatis kembali === */
 let candle = document.querySelector('.candle');
 let flame = document.querySelector('.flame');
 let relightTimer;
